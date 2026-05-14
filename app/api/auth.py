@@ -45,7 +45,7 @@ def login(user:UserCreate,db:Session=Depends(get_db)):
             detail="Wrong password!"
         )
     
-    token= create_access_token({"sub":db_user.email,"role": db_user.email })
+    token= create_access_token({"sub":db_user.email,"role": db_user.role })
     return{"access_token": token,"token_type": "bearer"}
          
         
