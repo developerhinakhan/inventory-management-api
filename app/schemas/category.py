@@ -1,5 +1,4 @@
-from pydantic import BaseModel,EmailStr
-from typing import Optional
+from pydantic import BaseModel
 from datetime import datetime
 
 class CategoryCreate(BaseModel):
@@ -11,8 +10,9 @@ class CategoryResponse(BaseModel):
     is_active:bool
     created_at:datetime
     updated_at:datetime    
-    class config:
-        orm_mode=  True #tells Pydantic that the model can read data directly from SQLAlchemy ORM objects.
+    class Config:
+        from_attributes =  True 
+        
     
     
     
