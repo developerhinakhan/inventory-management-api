@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.api.auth import router as auth_router
 from app.api.category import router as category_router
-
+from app.api.product import router as product_router
+ 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -13,6 +14,7 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(category_router)
+app.include_router(product_router)
 
 @app.get("/")
 def home():
