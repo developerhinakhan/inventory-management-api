@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.product import Product
-from app.schemas.product import ProductCreate, ProductResponse
+from app.schemas.product import ProductCreate, ProductResponse, ProductUpdate
 from typing import List
 
 router= APIRouter(prefix="/products", tags=["Products"])
@@ -36,17 +36,24 @@ def get_one_product(product_id: int,db:Session=Depends(get_db)):
     return product
 
 @router.put("/{product_id}",response_model=ProductResponse)
-def update_product(product_id:int,product_update:ProductCreate,db:Session=Depends(get_db)):
+def update_product(product_id:int,product_update:ProductUpdate,db:Session=Depends(get_db)):
     product= db.query(Product).filter(Product.id==product_id).first()
     if not product:
         raise HTTPException(status_code=404,detail="Product not found")
-    product.name= product_update.name
-    product.description= product_update.description
-    product.sku= product_update.sku
-    product.category_id= product_update.category_id
-    product.sale_price= product_update.sale_price
-    product.cost_price= product_update.cost_price
-    product.min_stock_level= product_update.min_stock_level
+    if product_update.name is not None:
+        product.name = product_update.name
+    if product_update.description is not None:
+        product.description = product_update.description
+    if product_update.sku is not None:
+        product.sku = product_update.sku
+    if product_update.category_id is not None:
+        product.category_id = product_update.category_id
+    if product_update.sale_price is not None:
+        product.sale_price = product_update.sale_price
+    if product_update.cost_price is not None:
+        product.cost_price = product_update.cost_price
+    if product_update.min_stock_level is not None:
+        product.min_stock_level = product_update.min_stock_level
     db.commit()
     db.refresh(product)
     return product

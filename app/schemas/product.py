@@ -11,6 +11,15 @@ class ProductCreate(BaseModel):
     cost_price: float
     min_stock_level: int
     
+class ProductUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    sku: Optional[str] = None
+    category_id: Optional[int] = None
+    sale_price: Optional[float] = None
+    cost_price: Optional[float] = None
+    min_stock_level: Optional[int] = None
+    
 class ProductResponse(BaseModel):
     id: int
     name: str
